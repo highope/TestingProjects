@@ -1,1 +1,13 @@
 Test  
+SqlConnection _sqlconnection = new SqlConnection(commandString);
+            _sqlconnection.Open();
+            
+
+
+            string ColumnName = CsvUnescapeSplit(fileName);
+            string TableName = Table_Name(fileName);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = _sqlconnection;
+
+            cmd.CommandText = "select case when exists((select * from information_schema.tables where table_name = '" + TableName + "')) then 1 else 0 end";
+            bool exists = (int)cmd.ExecuteScalar() == 1;
